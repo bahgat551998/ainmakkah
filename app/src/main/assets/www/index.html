@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>العد التنازلي – مشروع عين مكة</title>
+<style>
+@font-face{font-family:'Cairo';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cairo-arabic-400-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cairo-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/cairo-arabic-600-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/cairo-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/cairo-arabic-800-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/cairo-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:900;font-display:swap;src:url(fonts/cairo-arabic-900-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:'Cairo';font-style:normal;font-weight:900;font-display:swap;src:url(fonts/cairo-latin-900-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{--gold:#c9a96a;--gold-d:#a8863f;--ink:#111;--muted:#7a7467;--cream:#faf6ee;color-scheme:light}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{overflow:hidden;font-family:'Cairo',Tahoma,Arial,sans-serif;color:var(--ink);background:
+radial-gradient(circle at 10% 12%,#f3e9d2 0,transparent 36%),
+radial-gradient(circle at 92% 90%,#f4ead3 0,transparent 38%),
+linear-gradient(180deg,#fff,#fbf8f1 55%,#fff)}
+.orb{position:fixed;border-radius:50%;background:radial-gradient(circle,rgba(201,169,106,.22),transparent 70%);animation:float 14s ease-in-out infinite;pointer-events:none}
+.o1{width:38vh;height:38vh;top:10%;left:6%}
+.o2{width:48vh;height:48vh;bottom:6%;right:8%;animation-delay:-6s}
+.o3{width:26vh;height:26vh;top:42%;left:46%;animation-delay:-10s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(3vw,-4vh)}}
+.frame{position:fixed;top:2vh;right:2vh;bottom:2vh;left:2vh;border-radius:2.4vh;padding:.55vh;pointer-events:none;z-index:5;
+background:conic-gradient(from var(--a),#c9a96a,#fff 18%,#ecd9a6 38%,#a8863f 58%,#fff 78%,#c9a96a);
+-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 7s linear infinite}
+.frame.glow{filter:blur(1.4vh);opacity:.7}
+.frame2{position:fixed;top:3.6vh;right:3.6vh;bottom:3.6vh;left:3.6vh;border:1px solid #e7d9b6;border-radius:1.6vh;pointer-events:none;z-index:4}
+@keyframes spin{to{--a:360deg}}
+.page{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;padding:5vh 5vw 4.5vh}
+header{display:flex;align-items:center;justify-content:space-between;width:100%;height:18vh;flex-shrink:0}
+.brand{display:flex;flex-direction:column;align-items:center;gap:1vh}
+.logo{height:10.5vh;width:auto}
+header h1{margin:0;font-size:3.1vh;font-weight:800;color:var(--gold-d);display:flex;align-items:center;gap:1.2vw;letter-spacing:.2vh}
+header h1::before,header h1::after{content:"";width:5vw;height:2px;background:linear-gradient(270deg,transparent,var(--gold))}
+header h1::after{background:linear-gradient(90deg,transparent,var(--gold))}
+.info{width:26vw;display:flex;gap:.5vh}
+.info.date{flex-direction:column;border-right:3px solid var(--gold);padding-right:1.4vw}
+.wd{font-size:3.8vh;font-weight:800;color:var(--gold-d);line-height:1.1}
+.gd{font-size:2.8vh;font-weight:600}
+.hd{font-size:2.2vh;color:var(--muted)}
+.info.clock{direction:ltr;align-items:center;gap:1.4vw;border-left:3px solid var(--gold);padding-left:1.2vw}
+.ana{height:14.5vh;width:14.5vh;flex-shrink:0;filter:drop-shadow(0 .8vh 1.2vh rgba(168,134,63,.35))}
+.dig{display:flex;flex-direction:column;gap:.4vh}
+.time{font-size:5.4vh;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.time small{font-size:2.4vh;font-weight:700;color:var(--gold-d);margin-left:.5vw}
+.tz{font-size:2vh;color:var(--muted);direction:rtl;text-align:left}
+.days{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;width:100%}
+.days .num{font-size:min(52vh,36vw);font-weight:900;line-height:.9;color:#111;font-variant-numeric:lining-nums tabular-nums;
+text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.015)}}
+.days .lbl{margin-top:1vh;font-size:6vh;font-weight:800;color:var(--gold-d);display:flex;align-items:center;gap:2vw}
+.days .lbl::before,.days .lbl::after{content:"";width:12vw;height:2px;background:linear-gradient(90deg,transparent,var(--gold))}
+.days .lbl::after{background:linear-gradient(270deg,transparent,var(--gold))}
+.target{margin-top:2.2vh;display:flex;align-items:center;gap:1.2vw;padding:1.1vh 2.6vw;background:linear-gradient(180deg,#fff,var(--cream));border:1px solid #e3d4ac;border-radius:10vh;box-shadow:0 1.4vh 3.5vh -2.2vh rgba(168,134,63,.6)}
+.target span{font-size:2.8vh;font-weight:600;color:var(--muted)}
+.target b{font-size:3.6vh;font-weight:800;color:var(--ink)}
+.done{display:none;flex:1;align-items:center;justify-content:center;font-size:9vh;font-weight:900;color:var(--gold-d)}
+.set{position:fixed;bottom:4.5vh;left:4.5vh;z-index:9;display:flex;gap:8px;align-items:center;font-size:14px;opacity:0;transition:.3s;background:#fff;padding:8px 12px;border:1px solid #eadfc6;border-radius:12px}
+.set:hover,.set:focus-within{opacity:1}
+.set input{font:inherit;padding:6px 10px;border:1px solid #eadfc6;border-radius:8px}
+.set button{font:inherit;font-weight:600;padding:6px 14px;border:0;border-radius:8px;background:var(--gold);color:#fff;cursor:pointer}
+.gear{position:fixed;bottom:4.2vh;left:4.2vh;z-index:9;width:5vh;height:5vh;border-radius:50%;border:1px solid #eadfc6;background:#fff;color:var(--gold-d);font-size:2.6vh;cursor:pointer;opacity:.12;transition:.3s}
+.gear:hover,.gear:focus{opacity:1}
+.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.78)}
+.modal.open{display:flex}
+.mbox{background:#fff;border:1px solid #e3d4ac;border-radius:18px;padding:28px 32px;box-shadow:0 20px 60px -20px rgba(168,134,63,.6);text-align:center;min-width:min(420px,90vw)}
+.mbox h2{margin:0 0 16px;font-size:22px;color:var(--gold-d)}
+.mbox input{font:inherit;font-size:18px;padding:10px 14px;border:1px solid #e3d4ac;border-radius:10px;width:100%}
+.mrow{display:flex;gap:10px;margin-top:18px;justify-content:center;flex-wrap:wrap}
+.mrow button{font:inherit;font-weight:700;padding:10px 20px;border:0;border-radius:10px;background:var(--gold);color:#fff;cursor:pointer}
+.mrow button.alt{background:#f3ecdb;color:var(--gold-d)}
+
+/* ---- TV additions ---- */
+.gear{opacity:.35}
+.gear:focus,.mbox button:focus{outline:.5vh solid #111;outline-offset:.3vh;opacity:1}
+.hint{position:fixed;left:11vh;bottom:4.6vh;z-index:9;font-size:2vh;font-weight:600;color:var(--gold-d);background:#fff;border:1px solid #e3d4ac;border-radius:10vh;padding:.8vh 1.4vw;white-space:nowrap;transition:opacity .8s}
+.hint.off{opacity:0}
+.mbox.tv{padding:4vh 4vw;min-width:62vw}
+.mbox.tv h2{font-size:4vh;margin-bottom:3vh}
+.spin{display:flex;gap:2vw;justify-content:center;direction:rtl}
+.fld{display:flex;flex-direction:column;align-items:center;gap:1vh;min-width:9vw}
+.fld label{font-size:2.4vh;color:var(--muted);font-weight:600}
+.fld output{font-size:6vh;font-weight:800;color:var(--ink);font-variant-numeric:lining-nums tabular-nums;line-height:1.1}
+.fld button{width:100%;font:inherit;font-size:3.4vh;line-height:1;padding:1.2vh 0;border:1px solid #e3d4ac;border-radius:1.4vh;background:var(--cream);color:var(--gold-d);cursor:pointer}
+.mbox.tv .mrow{margin-top:4vh;gap:2vw}
+.mbox.tv .mrow button{font-size:3vh;padding:1.4vh 3vw;border-radius:1.4vh}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div class="frame glow"></div><div class="frame"></div><div class="frame2"></div>
+
+<div class="page">
+  <header>
+    <div class="info date"><div class="wd" id="wd"></div><div class="gd" id="gd"></div><div class="hd" id="hd"></div></div>
+    <div class="brand">
+      <img class="logo" alt="عين مكة" src="logo.png">
+      <h1>العد التنازلي للمشروع</h1>
+    </div>
+    <div class="info clock">
+      <svg class="ana" viewBox="0 0 100 100" aria-label="ساعة">
+        <circle cx="50" cy="50" r="47" fill="#fff" stroke="#c9a96a" stroke-width="3"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#eadfc6" stroke-width=".8"/>
+        <g id="ticks"></g><g id="nums"></g>
+        <line id="hh" x1="50" y1="54" x2="50" y2="29" stroke="#111" stroke-width="3.8" stroke-linecap="round"/>
+        <line id="mh" x1="50" y1="56" x2="50" y2="17" stroke="#111" stroke-width="2.6" stroke-linecap="round"/>
+        <line id="sh" x1="50" y1="60" x2="50" y2="11" stroke="#c9a96a" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="3.2" fill="#c9a96a"/><circle cx="50" cy="50" r="1.2" fill="#fff"/>
+      </svg>
+      <div class="dig"><div class="time"><span id="clk">00:00:00</span><small id="ap"></small></div><div class="tz">التوقيت المحلي</div></div>
+    </div>
+  </header>
+
+  <section class="days" id="days">
+    <div class="num" id="d">0</div>
+    <div class="lbl">يوم متبقي</div>
+    <div class="target"><span>التاريخ المستهدف</span><b id="tg"></b></div>
+  </section>
+  <div class="done" id="done">🎉 حان موعد مشروع عين مكة</div>
+</div>
+
+
+
+<button class="gear" id="gear" aria-label="تغيير التاريخ المستهدف">⚙</button>
+<div class="modal" id="modal"><div class="mbox tv"><h2>تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
+<div class="hint" id="hint">اضغط زر OK في الريموت لتغيير التاريخ المستهدف</div>
+<script>
+var DEFAULT="2027-02-24T00:00",KEY="ainmakkah-target-v3",target=DEFAULT;
+try{var sv=localStorage.getItem(KEY);if(sv)target=sv;}catch(e){} /* التاريخ المستهدف محفوظ هنا داخل الصفحة */
+function $(i){return document.getElementById(i);}
+function p(n){return String(n).padStart(2,"0");}
+function f(n){return n.toLocaleString("en-US");}
+function showTarget(){$("tg").textContent=new Date(target).toLocaleDateString("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
+function tick(){
+  var ms=new Date(target)-new Date();
+  if(isNaN(ms))return;
+  var over=ms<=0;
+  $("days").style.display=over?"none":"";
+  $("done").style.display=over?"flex":"none";
+  if(over)return;
+  $("d").textContent=f(Math.ceil(ms/86400000));
+}
+/* analog clock face */
+(function(){
+  var NS="http://www.w3.org/2000/svg",t=$("ticks"),n=$("nums");
+  for(var i=0;i<60;i++){
+    var a=i*6*Math.PI/180,r1=42,r2=i%5?39.5:36,l=document.createElementNS(NS,"line");
+    l.setAttribute("x1",50+r1*Math.sin(a));l.setAttribute("y1",50-r1*Math.cos(a));
+    l.setAttribute("x2",50+r2*Math.sin(a));l.setAttribute("y2",50-r2*Math.cos(a));
+    l.setAttribute("stroke",i%5?"#d9c899":"#a8863f");l.setAttribute("stroke-width",i%5?.6:1.6);
+    t.appendChild(l);
+  }
+  for(var h=1;h<=12;h++){
+    var b=h*30*Math.PI/180,x=document.createElementNS(NS,"text");
+    x.setAttribute("x",50+29*Math.sin(b));x.setAttribute("y",50-29*Math.cos(b));
+    x.setAttribute("text-anchor","middle");x.setAttribute("dominant-baseline","central");
+    x.setAttribute("font-size","8.5");x.setAttribute("font-weight","800");x.setAttribute("font-family","Cairo,Arial,sans-serif");
+    x.setAttribute("fill","#111");x.textContent=h;n.appendChild(x);
+  }
+})();
+function rot(id,deg){$(id).setAttribute("transform","rotate("+deg+" 50 50)");}
+var lastSec=-1,lastMin=-1,lastT=0;
+function clock(ts){
+  requestAnimationFrame(clock);
+  if(ts-lastT<33)return; lastT=ts;
+  var n=new Date(),h=n.getHours(),m=n.getMinutes(),sec=n.getSeconds(),s=sec+n.getMilliseconds()/1000;
+  rot("sh",s*6);rot("mh",(m+s/60)*6);rot("hh",((h%12)+m/60)*30);
+  if(sec!==lastSec){
+    lastSec=sec;
+    $("clk").textContent=p(h%12||12)+":"+p(m)+":"+p(sec);
+    $("ap").textContent=h>=12?"م":"ص";
+  }
+  if(m!==lastMin){
+    lastMin=m;
+    $("wd").textContent=n.toLocaleDateString("ar-EG",{weekday:"long"});
+    $("gd").textContent=n.toLocaleDateString("ar-EG-u-nu-latn",{day:"numeric",month:"long",year:"numeric"});
+    try{$("hd").textContent=n.toLocaleDateString("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"});}catch(e){}
+  }
+}
+
+document.addEventListener("dblclick",function(e){
+  if(e.target.closest(".set,.modal,.gear"))return;
+  try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(x){}
+});
+function keepAwake(){try{if(navigator.wakeLock){navigator.wakeLock.request("screen").catch(function(){});}}catch(e){}}
+document.addEventListener("visibilitychange",function(){if(!document.hidden)keepAwake();});
+keepAwake();
+var md=$("modal"),st={y:2027,m:1,d:1,h:0,n:0};
+var LIM={y:[2024,2100],m:[1,12],d:[1,31],h:[0,23],n:[0,59]},STEP={y:1,m:1,d:1,h:1,n:5};
+function dim(y,m){return new Date(y,m,0).getDate();}
+function render(){
+  var mx=dim(st.y,st.m);if(st.d>mx)st.d=mx;
+  $("v_d").textContent=st.d;$("v_m").textContent=st.m;$("v_y").textContent=st.y;
+  $("v_h").textContent=p(st.h);$("v_n").textContent=p(st.n);
+}
+function bump(k,dir){
+  var lo=LIM[k][0],hi=LIM[k][1];
+  if(k==="d")hi=dim(st.y,st.m);
+  var v=st[k]+dir*STEP[k];
+  if(v>hi)v=lo;else if(v<lo)v=hi;
+  st[k]=v;render();
+}
+function openModal(){
+  var d=new Date(target);if(isNaN(d))d=new Date(DEFAULT);
+  st={y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate(),h:d.getHours(),n:d.getMinutes()};
+  render();md.classList.add("open");
+  var b=md.querySelector('[data-f="d"]');if(b)b.focus();
+}
+function closeModal(){md.classList.remove("open");}
+function rows(){
+  var all=[].slice.call(md.querySelectorAll("button"));
+  return [all.filter(function(b){return b.dataset.s==="1";}),
+          all.filter(function(b){return b.dataset.s==="-1";}),
+          [$("save"),$("reset"),$("close")]];
+}
+function nav(key){
+  var R=rows(),cur=document.activeElement,r=-1,c=-1,i;
+  for(i=0;i<R.length;i++){var j=R[i].indexOf(cur);if(j>=0){r=i;c=j;break;}}
+  if(r<0){R[0][0].focus();return;}
+  /* الصفحة RTL: اليمين = أول عنصر */
+  if(key==="ArrowRight")c=Math.max(0,c-1);
+  else if(key==="ArrowLeft")c=Math.min(R[r].length-1,c+1);
+  else if(key==="ArrowDown")r=Math.min(2,r+1);
+  else if(key==="ArrowUp")r=Math.max(0,r-1);
+  c=Math.min(c,R[r].length-1);
+  R[r][c].focus();
+}
+function saveDate(){
+  var mx=dim(st.y,st.m);if(st.d>mx)st.d=mx;
+  target=st.y+"-"+p(st.m)+"-"+p(st.d)+"T"+p(st.h)+":"+p(st.n);
+  try{localStorage.setItem(KEY,target);}catch(e){}
+  showTarget();tick();closeModal();
+}
+md.addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b||!b.dataset.f)return;
+  bump(b.dataset.f,+b.dataset.s);
+});
+$("gear").onclick=openModal;
+$("close").onclick=closeModal;
+$("save").onclick=saveDate;
+$("reset").onclick=function(){target=DEFAULT;try{localStorage.removeItem(KEY);}catch(e){}showTarget();tick();closeModal();};
+document.addEventListener("keydown",function(e){
+  var k=e.key,kc=e.keyCode,isOpen=md.classList.contains("open");
+  if(!isOpen){
+    if(k==="Enter"||k===" "||k==="ContextMenu"||kc===13||kc===23||kc===82||kc===93){e.preventDefault();openModal();}
+    return;
+  }
+  if(k==="ArrowLeft"||k==="ArrowRight"||k==="ArrowUp"||k==="ArrowDown"){e.preventDefault();nav(k);}
+  else if(k==="Escape"||kc===27||kc===4){e.preventDefault();closeModal();}
+  /* Enter على الأزرار يعمل click تلقائياً */
+});
+/* زر الرجوع في الريموت: يُستدعى من تطبيق الأندرويد */
+window.__onBack=function(){if(md.classList.contains("open")){closeModal();return true;}return false;};
+setTimeout(function(){$("hint").classList.add("off");},12000);
+showTarget();tick();requestAnimationFrame(clock);setInterval(tick,1000);
+</script>
+</body>
+</html>

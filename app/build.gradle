@@ -10,8 +10,8 @@ android {
         applicationId "com.ainmakkah.countdown"
         minSdk 21
         targetSdk 34
-        versionCode 5
-        versionName "1.4"
+        versionCode 6
+        versionName "1.5"
     }
 
     // توقيع ثابت: لو وُجد ملف المفتاح (من GitHub Secrets) نستخدمه، عشان التحديثات تنزل فوق بعض

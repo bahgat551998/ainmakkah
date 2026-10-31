@@ -141,7 +141,7 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 <button class="gear" id="gear" aria-label="تغيير التاريخ المستهدف">⚙</button>
 <div class="modal" id="modal"><div class="mbox tv"><h2 id="mt">تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="which" class="alt">تعديل تاريخ الاشتراك</button><button id="mode" class="alt">عرض بالهجري</button><button id="logosec" class="alt">مدة شاشة الشعار</button><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
 <div class="splash" id="logo"><img src="balubaid.jpg" alt="شركة سعيد أحمد باليبيد للمقاولات العامة"></div>
-<div class="modal" id="lmodal"><div class="mbox"><h2>مدة شاشة الشعار</h2><p class="lmodal-note">بالثواني (من 5 إلى 600)</p><input class="pw" id="lsec" type="number" min="5" max="600" step="5" inputmode="numeric" aria-label="المدة بالثواني"><div class="perr" id="lerr"></div><div class="mrow"><button id="lsave">حفظ</button><button id="lcancel" class="alt">إلغاء</button></div></div></div>
+<div class="modal" id="lmodal"><div class="mbox"><h2>إعدادات شاشة الشعار</h2><label class="lmodal-note" for="lint">كل كم ثانية يظهر الشعار؟</label><input class="pw" id="lint" type="number" min="5" max="86400" step="1" inputmode="numeric"><label class="lmodal-note" for="lsec">مدة ظهور الشعار بالثواني؟</label><input class="pw" id="lsec" type="number" min="3" max="600" step="1" inputmode="numeric"><div class="perr" id="lerr"></div><div class="mrow"><button id="lsave">حفظ وعرض الشعار الآن</button><button id="lcancel" class="alt">إلغاء</button></div></div></div>
 <div class="modal" id="pmodal"><div class="mbox"><h2>أدخل كلمة المرور</h2><input class="pw" id="pw" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="كلمة المرور"><div class="perr" id="perr"></div><div class="mrow"><button id="pok">دخول</button><button id="pcancel" class="alt">إلغاء</button></div></div></div>
 <div class="hint" id="hint">اضغط زر OK في الريموت لتغيير التاريخ المستهدف</div>
 <script>
@@ -150,8 +150,8 @@ var DEFAULT="2027-02-24T00:00",KEY="ainmakkah-target-v3",target=DEFAULT;
 var EXP_DEFAULT="2027-03-31T23:59",EXP_KEY="ainmakkah-expiry-v1",expiry=EXP_DEFAULT;
 try{var ev=localStorage.getItem(EXP_KEY);if(ev)expiry=ev;}catch(e){}
 var editing="target";
-var LOGO_EVERY=5*60*1000,LOGO_KEY="ainmakkah-logo-secs-v1",logoSecs=30,logoOn=false,logoEnd=0,lastLogo=Date.now();
-try{var lv=parseInt(localStorage.getItem(LOGO_KEY),10);if(lv>=5&&lv<=600)logoSecs=lv;}catch(e){}
+var LOGO_KEY="ainmakkah-logo-v2",logoEvery=300,logoSecs=30,logoOn=false,logoEnd=0,lastLogo=Date.now();
+try{var lc=JSON.parse(localStorage.getItem(LOGO_KEY)||"null");if(lc){if(lc.every>=5&&lc.every<=86400)logoEvery=lc.every;if(lc.dur>=3&&lc.dur<=600)logoSecs=lc.dur;}}catch(e){}
 try{var sv=localStorage.getItem(KEY);if(sv)target=sv;}catch(e){} /* التاريخ المستهدف محفوظ هنا داخل الصفحة */
 function $(i){return document.getElementById(i);}
 function p(n){return String(n).padStart(2,"0");}
@@ -300,12 +300,12 @@ function openModal(){
 }
 function closeModal(){md.classList.remove("open");}
 function anyModalOpen(){return md.classList.contains("open")||pmd.classList.contains("open")||lmd.classList.contains("open");}
-function showLogo(){logoOn=true;logoEnd=Date.now()+logoSecs*1000;lastLogo=Date.now();$("logo").style.display="flex";}
-function hideLogo(){logoOn=false;$("logo").style.display="none";}
+function showLogo(){logoOn=true;logoEnd=Date.now()+logoSecs*1000;$("logo").style.display="flex";}
+function hideLogo(){logoOn=false;lastLogo=Date.now();$("logo").style.display="none";}
 function logoTick(){
   var now=Date.now();
   if(logoOn){if(now>=logoEnd)hideLogo();return;}
-  if(now-lastLogo<LOGO_EVERY)return;
+  if(now-lastLogo<logoEvery*1000)return;
   if(isExpired()||anyModalOpen())return;
   showLogo();
 }
@@ -313,15 +313,17 @@ function openLogoSet(){
   closeModal();
   $("lerr").textContent="";
   $("lsec").value=logoSecs;
+  $("lint").value=logoEvery;
   lmd.classList.add("open");
   setTimeout(function(){$("lsec").focus();},50);
 }
 function closeLogoSet(){lmd.classList.remove("open");}
 function saveLogoSet(){
-  var v=parseInt($("lsec").value,10);
-  if(isNaN(v)||v<5||v>600){$("lerr").textContent="أدخل رقم بين 5 و 600";return;}
-  logoSecs=v;
-  try{localStorage.setItem(LOGO_KEY,String(v));}catch(e){}
+  var dur=parseInt($("lsec").value,10),every=parseInt($("lint").value,10);
+  if(isNaN(every)||every<5||every>86400){$("lerr").textContent="المدة بين الظهور: من 5 ثواني إلى 86400";return;}
+  if(isNaN(dur)||dur<3||dur>600){$("lerr").textContent="مدة الظهور: من 3 ثواني إلى 600";return;}
+  logoSecs=dur;logoEvery=every;
+  try{localStorage.setItem(LOGO_KEY,JSON.stringify({every:every,dur:dur}));}catch(e){}
   closeLogoSet();
   if(!isExpired())showLogo();
 }
@@ -382,10 +384,12 @@ $("which").onclick=toggleWhich;
 $("logosec").onclick=openLogoSet;
 $("lsave").onclick=saveLogoSet;
 $("lcancel").onclick=closeLogoSet;
-$("lsec").addEventListener("keydown",function(e){
-  e.stopPropagation();
-  if(e.key==="Enter"||e.keyCode===13){e.preventDefault();saveLogoSet();}
-  else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closeLogoSet();}
+["lsec","lint"].forEach(function(id){
+  $(id).addEventListener("keydown",function(e){
+    e.stopPropagation();
+    if(e.key==="Enter"||e.keyCode===13){e.preventDefault();saveLogoSet();}
+    else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closeLogoSet();}
+  });
 });
 $("close").onclick=closeModal;
 $("save").onclick=saveDate;

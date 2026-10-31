@@ -60,7 +60,8 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 .days .lbl::after{background:linear-gradient(270deg,transparent,var(--gold))}
 .target{margin-top:2.2vh;display:flex;align-items:center;gap:1.2vw;padding:1.1vh 2.6vw;background:linear-gradient(180deg,#fff,var(--cream));border:1px solid #e3d4ac;border-radius:10vh;box-shadow:0 1.4vh 3.5vh -2.2vh rgba(168,134,63,.6)}
 .target span{font-size:2.8vh;font-weight:600;color:var(--muted)}
-.target b{font-size:3.6vh;font-weight:800;color:var(--ink)}
+.target b{font-size:6vh;font-weight:900;color:var(--ink);line-height:1}
+.target em{font-style:normal;font-size:2.8vh;font-weight:600;color:var(--muted)}
 .done{display:none;flex:1;align-items:center;justify-content:center;font-size:9vh;font-weight:900;color:var(--gold-d)}
 .set{position:fixed;bottom:4.5vh;left:4.5vh;z-index:9;display:flex;gap:8px;align-items:center;font-size:14px;opacity:0;transition:.3s;background:#fff;padding:8px 12px;border:1px solid #eadfc6;border-radius:12px}
 .set:hover,.set:focus-within{opacity:1}
@@ -68,7 +69,7 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 .set button{font:inherit;font-weight:600;padding:6px 14px;border:0;border-radius:8px;background:var(--gold);color:#fff;cursor:pointer}
 .gear{position:fixed;bottom:4.2vh;left:4.2vh;z-index:9;width:5vh;height:5vh;border-radius:50%;border:1px solid #eadfc6;background:#fff;color:var(--gold-d);font-size:2.6vh;cursor:pointer;opacity:.12;transition:.3s}
 .gear:hover,.gear:focus{opacity:1}
-.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.78)}
+.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.78)}
 .modal.open{display:flex}
 .mbox{background:#fff;border:1px solid #e3d4ac;border-radius:18px;padding:28px 32px;box-shadow:0 20px 60px -20px rgba(168,134,63,.6);text-align:center;min-width:min(420px,90vw)}
 .mbox h2{margin:0 0 16px;font-size:22px;color:var(--gold-d)}
@@ -95,6 +96,10 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 .expired{position:fixed;top:0;right:0;bottom:0;left:0;z-index:30;display:none;align-items:center;justify-content:center;background:#fff;font-size:8vh;font-weight:900;color:var(--gold-d);text-align:center;padding:5vh}
 .pw{font:inherit;font-size:4vh;letter-spacing:1vh;text-align:center;padding:1vh 2vw;width:100%;border:1px solid #e3d4ac;border-radius:1.4vh}
 .perr{color:#b00;min-height:1.4em;margin-top:1vh;font-weight:700}
+.expired small{display:block;margin-top:3vh;font-size:3vh;font-weight:600;color:var(--muted)}
+.logo{position:fixed;top:0;right:0;bottom:0;left:0;z-index:25;display:none;align-items:center;justify-content:center;background:#fff}
+.logo img{max-width:80vw;max-height:88vh;object-fit:contain}
+.lmodal-note{font-size:2.4vh;color:var(--muted);margin:1vh 0 0}
 </style>
 </head>
 <body>
@@ -125,27 +130,33 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
   <section class="days" id="days">
     <div class="num" id="d">0</div>
     <div class="lbl">يوم متبقي</div>
-    <div class="target"><span>التاريخ المستهدف</span><b id="tg"></b></div><div class="thij" id="thj"></div>
+    <div class="target"><span>التاريخ المستهدف</span><b id="thj"></b><em id="tg"></em></div>
   </section>
   <div class="done" id="done">🎉 حان موعد مشروع عين مكة</div>
-<div class="expired" id="expired">برجاء تجديد الاشتراك</div>
+<div class="expired" id="expired"><div>برجاء تجديد الاشتراك</div><small>اضغط ⚙ (أو OK في الريموت) وأدخل كلمة المرور لتفعيل الاشتراك</small></div>
 </div>
 
 
 
 <button class="gear" id="gear" aria-label="تغيير التاريخ المستهدف">⚙</button>
-<div class="modal" id="modal"><div class="mbox tv"><h2 id="mt">تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="mode" class="alt">عرض بالهجري</button><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
+<div class="modal" id="modal"><div class="mbox tv"><h2 id="mt">تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="which" class="alt">تعديل تاريخ الاشتراك</button><button id="mode" class="alt">عرض بالهجري</button><button id="logosec" class="alt">مدة شاشة الشعار</button><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
+<div class="logo" id="logo"><img src="balubaid.jpg" alt="شركة سعيد أحمد باليبيد للمقاولات العامة"></div>
+<div class="modal" id="lmodal"><div class="mbox"><h2>مدة شاشة الشعار</h2><p class="lmodal-note">بالثواني (من 5 إلى 600)</p><input class="pw" id="lsec" type="number" min="5" max="600" step="5" inputmode="numeric" aria-label="المدة بالثواني"><div class="perr" id="lerr"></div><div class="mrow"><button id="lsave">حفظ</button><button id="lcancel" class="alt">إلغاء</button></div></div></div>
 <div class="modal" id="pmodal"><div class="mbox"><h2>أدخل كلمة المرور</h2><input class="pw" id="pw" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="كلمة المرور"><div class="perr" id="perr"></div><div class="mrow"><button id="pok">دخول</button><button id="pcancel" class="alt">إلغاء</button></div></div></div>
 <div class="hint" id="hint">اضغط زر OK في الريموت لتغيير التاريخ المستهدف</div>
 <script>
 var DEFAULT="2027-02-24T00:00",KEY="ainmakkah-target-v3",target=DEFAULT;
 /* تاريخ انتهاء الاشتراك (ميلادي) - عدّله عند التجديد: YYYY-MM-DDTHH:mm */
-var EXPIRY="2027-03-31T23:59";
+var EXP_DEFAULT="2027-03-31T23:59",EXP_KEY="ainmakkah-expiry-v1",expiry=EXP_DEFAULT;
+try{var ev=localStorage.getItem(EXP_KEY);if(ev)expiry=ev;}catch(e){}
+var editing="target";
+var LOGO_EVERY=5*60*1000,LOGO_KEY="ainmakkah-logo-secs-v1",logoSecs=30,logoOn=false,logoEnd=0,lastLogo=Date.now();
+try{var lv=parseInt(localStorage.getItem(LOGO_KEY),10);if(lv>=5&&lv<=600)logoSecs=lv;}catch(e){}
 try{var sv=localStorage.getItem(KEY);if(sv)target=sv;}catch(e){} /* التاريخ المستهدف محفوظ هنا داخل الصفحة */
 function $(i){return document.getElementById(i);}
 function p(n){return String(n).padStart(2,"0");}
 function f(n){return n.toLocaleString("en-US");}
-function isExpired(){return new Date()>new Date(EXPIRY);}
+function isExpired(){return new Date()>new Date(expiry);}
 
 /* ---- التاريخ الهجري (تقويم أم القرى) ---- */
 var HF=new Intl.DateTimeFormat("en-US-u-ca-islamic-umalqura-nu-latn",{year:"numeric",month:"numeric",day:"numeric",timeZone:"UTC"});
@@ -176,17 +187,13 @@ function dim(y,m){return new Date(y,m,0).getDate();}
 
 function showTarget(){
   var d=new Date(target);
-  $("tg").textContent=d.toLocaleDateString("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
   try{$("thj").textContent=d.toLocaleDateString("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"});}catch(e){}
-}
-function showExpired(){
-  $("expired").style.display="flex";
-  $("days").style.display="none";
-  $("done").style.display="none";
-  md.classList.remove("open");
+  $("tg").textContent=d.toLocaleDateString("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
 function tick(){
-  if(isExpired()){showExpired();return;}
+  var ex=isExpired();
+  $("expired").style.display=ex?"flex":"none";
+  if(ex){$("days").style.display="none";$("done").style.display="none";return;}
   var ms=new Date(target)-new Date();
   if(isNaN(ms))return;
   var over=ms<=0;
@@ -242,7 +249,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)keep
 keepAwake();
 
 /* ---- نافذة تغيير التاريخ (ميلادي / هجري) ---- */
-var md=$("modal"),st={y:2027,m:1,d:1,h:0,n:0},mode="g";
+var md=$("modal"),lmd=$("lmodal"),st={y:2027,m:1,d:1,h:0,n:0},mode="g";
 var LIM={m:[1,12],h:[0,23],n:[0,59]},STEP={y:1,m:1,d:1,h:1,n:5};
 function lim(k){
   if(k==="y")return mode==="h"?[1400,1500]:[2024,2100];
@@ -263,7 +270,8 @@ function render(){
   if(st.d>mx)st.d=mx;
   $("v_d").textContent=st.d;$("v_m").textContent=st.m;$("v_y").textContent=st.y;
   $("v_h").textContent=p(st.h);$("v_n").textContent=p(st.n);
-  $("mt").textContent="تغيير التاريخ المستهدف ("+(mode==="h"?"هجري":"ميلادي")+")";
+  $("mt").textContent=(editing==="target"?"التاريخ المستهدف":"تاريخ انتهاء الاشتراك")+" ("+(mode==="h"?"هجري":"ميلادي")+")";
+  $("which").textContent=editing==="target"?"تعديل تاريخ الاشتراك":"تعديل التاريخ المستهدف";
   $("mode").textContent=mode==="g"?"عرض بالهجري":"عرض بالميلادي";
 }
 function bump(k,dir){
@@ -278,19 +286,49 @@ function toggleMode(){
   setStFrom(cur);
   render();
 }
+function valOf(k){var d=new Date(k==="target"?target:expiry);return isNaN(d)?new Date(k==="target"?DEFAULT:EXP_DEFAULT):d;}
+function toggleWhich(){
+  editing=editing==="target"?"expiry":"target";
+  setStFrom(valOf(editing));
+  render();
+}
 function openModal(){
-  if(isExpired())return;
-  var d=new Date(target);if(isNaN(d))d=new Date(DEFAULT);
-  setStFrom(d);
+  editing=isExpired()?"expiry":"target";
+  setStFrom(valOf(editing));
   render();md.classList.add("open");
   var b=md.querySelector('[data-f="d"]');if(b)b.focus();
 }
 function closeModal(){md.classList.remove("open");}
+function anyModalOpen(){return md.classList.contains("open")||pmd.classList.contains("open")||lmd.classList.contains("open");}
+function showLogo(){logoOn=true;logoEnd=Date.now()+logoSecs*1000;lastLogo=Date.now();$("logo").style.display="flex";}
+function hideLogo(){logoOn=false;$("logo").style.display="none";}
+function logoTick(){
+  var now=Date.now();
+  if(logoOn){if(now>=logoEnd)hideLogo();return;}
+  if(now-lastLogo<LOGO_EVERY)return;
+  if(isExpired()||anyModalOpen())return;
+  showLogo();
+}
+function openLogoSet(){
+  closeModal();
+  $("lerr").textContent="";
+  $("lsec").value=logoSecs;
+  lmd.classList.add("open");
+  setTimeout(function(){$("lsec").focus();},50);
+}
+function closeLogoSet(){lmd.classList.remove("open");}
+function saveLogoSet(){
+  var v=parseInt($("lsec").value,10);
+  if(isNaN(v)||v<5||v>600){$("lerr").textContent="أدخل رقم بين 5 و 600";return;}
+  logoSecs=v;
+  try{localStorage.setItem(LOGO_KEY,String(v));}catch(e){}
+  closeLogoSet();
+}
 function rows(){
   var all=[].slice.call(md.querySelectorAll("button"));
   return [all.filter(function(b){return b.dataset.s==="1";}),
           all.filter(function(b){return b.dataset.s==="-1";}),
-          [$("mode"),$("save"),$("reset"),$("close")]];
+          [$("which"),$("mode"),$("logosec"),$("save"),$("reset"),$("close")]];
 }
 function nav(key){
   var R=rows(),cur=document.activeElement,r=-1,c=-1,i;
@@ -305,9 +343,13 @@ function nav(key){
   R[r][c].focus();
 }
 function saveDate(){
-  if(isExpired())return;
   var cd=curDate();
-  target=cd.getFullYear()+"-"+p(cd.getMonth()+1)+"-"+p(cd.getDate())+"T"+p(cd.getHours())+":"+p(cd.getMinutes());
+  var v=cd.getFullYear()+"-"+p(cd.getMonth()+1)+"-"+p(cd.getDate())+"T"+p(cd.getHours())+":"+p(cd.getMinutes());
+  if(editing==="expiry"){
+    expiry=v;try{localStorage.setItem(EXP_KEY,v);}catch(e){}
+    tick();closeModal();return;
+  }
+  target=v;
   try{localStorage.setItem(KEY,target);}catch(e){}
   showTarget();tick();closeModal();
 }
@@ -317,7 +359,6 @@ md.addEventListener("click",function(e){
 });
 var PW="4441",pmd=$("pmodal");
 function openPrompt(){
-  if(isExpired())return;
   $("pw").value="";$("perr").textContent="";
   pmd.classList.add("open");
   setTimeout(function(){$("pw").focus();},50);
@@ -331,15 +372,34 @@ $("gear").onclick=openPrompt;
 $("pok").onclick=checkPw;
 $("pcancel").onclick=closePrompt;
 $("pw").addEventListener("keydown",function(e){
+  e.stopPropagation();
   if(e.key==="Enter"||e.keyCode===13){e.preventDefault();checkPw();}
   else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closePrompt();}
 });
 $("mode").onclick=toggleMode;
+$("which").onclick=toggleWhich;
+$("logosec").onclick=openLogoSet;
+$("lsave").onclick=saveLogoSet;
+$("lcancel").onclick=closeLogoSet;
+$("lsec").addEventListener("keydown",function(e){
+  e.stopPropagation();
+  if(e.key==="Enter"||e.keyCode===13){e.preventDefault();saveLogoSet();}
+  else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closeLogoSet();}
+});
 $("close").onclick=closeModal;
 $("save").onclick=saveDate;
-$("reset").onclick=function(){target=DEFAULT;try{localStorage.removeItem(KEY);}catch(e){}showTarget();tick();closeModal();};
+$("reset").onclick=function(){
+  if(editing==="expiry"){expiry=EXP_DEFAULT;try{localStorage.removeItem(EXP_KEY);}catch(e){}}
+  else{target=DEFAULT;try{localStorage.removeItem(KEY);}catch(e){}showTarget();}
+  tick();closeModal();
+};
 document.addEventListener("keydown",function(e){
   var k=e.key,kc=e.keyCode,isOpen=md.classList.contains("open");
+  if(logoOn){e.preventDefault();hideLogo();return;}
+  if(lmd.classList.contains("open")){
+    if(k==="Escape"||kc===27||kc===4){e.preventDefault();closeLogoSet();}
+    return;
+  }
   if(pmd.classList.contains("open")){
     if(k==="Escape"||kc===27||kc===4){e.preventDefault();closePrompt();}
     return;
@@ -352,9 +412,10 @@ document.addEventListener("keydown",function(e){
   else if(k==="Escape"||kc===27||kc===4){e.preventDefault();closeModal();}
 });
 /* زر الرجوع في الريموت: يُستدعى من تطبيق الأندرويد */
-window.__onBack=function(){if(pmd.classList.contains("open")){closePrompt();return true;}if(md.classList.contains("open")){closeModal();return true;}return false;};
+window.__onBack=function(){if(logoOn){hideLogo();return true;}if(lmd.classList.contains("open")){closeLogoSet();return true;}if(pmd.classList.contains("open")){closePrompt();return true;}if(md.classList.contains("open")){closeModal();return true;}return false;};
 setTimeout(function(){$("hint").classList.add("off");},12000);
 showTarget();tick();requestAnimationFrame(clock);setInterval(tick,1000);
+setInterval(logoTick,1000);
 </script>
 </body>
 </html>

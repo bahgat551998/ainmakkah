@@ -141,7 +141,7 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 <button class="gear" id="gear" aria-label="تغيير التاريخ المستهدف">⚙</button>
 <div class="modal" id="modal"><div class="mbox tv"><h2 id="mt">تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="which" class="alt">تعديل تاريخ الاشتراك</button><button id="mode" class="alt">عرض بالهجري</button><button id="logosec" class="alt">مدة شاشة الشعار</button><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
 <div class="splash" id="logo"><img src="balubaid.jpg" alt="شركة سعيد أحمد باليبيد للمقاولات العامة"></div>
-<div class="modal" id="lmodal"><div class="mbox"><h2>إعدادات شاشة الشعار</h2><label class="lmodal-note" for="lint">كل كم ثانية يظهر الشعار؟</label><input class="pw" id="lint" type="number" min="5" max="86400" step="1" inputmode="numeric"><label class="lmodal-note" for="lsec">مدة ظهور الشعار بالثواني؟</label><input class="pw" id="lsec" type="number" min="3" max="600" step="1" inputmode="numeric"><div class="perr" id="lerr"></div><div class="mrow"><button id="lsave">حفظ وعرض الشعار الآن</button><button id="lcancel" class="alt">إلغاء</button></div></div></div>
+<div class="modal" id="lmodal"><div class="mbox"><h2>إعدادات شاشة الشعار</h2><label class="lmodal-note" for="lint">كل كم ثانية يظهر الشعار؟</label><input class="pw" id="lint" type="text" inputmode="numeric" maxlength="5" autocomplete="off" aria-label="كل كم ثانية"><label class="lmodal-note" for="lsec">مدة ظهور الشعار بالثواني؟</label><input class="pw" id="lsec" type="text" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="مدة الظهور"><div class="perr" id="lerr"></div><div class="mrow"><button id="lsave">حفظ وعرض الشعار الآن</button><button id="lcancel" class="alt">إلغاء</button></div></div></div>
 <div class="modal" id="pmodal"><div class="mbox"><h2>أدخل كلمة المرور</h2><input class="pw" id="pw" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="كلمة المرور"><div class="perr" id="perr"></div><div class="mrow"><button id="pok">دخول</button><button id="pcancel" class="alt">إلغاء</button></div></div></div>
 <div class="hint" id="hint">اضغط زر OK في الريموت لتغيير التاريخ المستهدف</div>
 <script>
@@ -315,7 +315,7 @@ function openLogoSet(){
   $("lsec").value=logoSecs;
   $("lint").value=logoEvery;
   lmd.classList.add("open");
-  setTimeout(function(){$("lsec").focus();},50);
+  setTimeout(function(){$("lint").focus();},50);
 }
 function closeLogoSet(){lmd.classList.remove("open");}
 function saveLogoSet(){
@@ -384,11 +384,22 @@ $("which").onclick=toggleWhich;
 $("logosec").onclick=openLogoSet;
 $("lsave").onclick=saveLogoSet;
 $("lcancel").onclick=closeLogoSet;
-["lsec","lint"].forEach(function(id){
+/* التنقل داخل نافذة إعدادات الشعار: الأسهل فوق/تحت بين الخانات والأزرار */
+function lnav(k){
+  var order=[$("lint"),$("lsec"),$("lsave"),$("lcancel")];
+  var i=order.indexOf(document.activeElement);
+  if(i<0){order[0].focus();return;}
+  if(k==="ArrowDown"||k==="ArrowLeft") i=Math.min(order.length-1,i+1);
+  else if(k==="ArrowUp"||k==="ArrowRight") i=Math.max(0,i-1);
+  order[i].focus();
+}
+["lint","lsec"].forEach(function(id){
   $(id).addEventListener("keydown",function(e){
+    var k=e.key;
     e.stopPropagation();
-    if(e.key==="Enter"||e.keyCode===13){e.preventDefault();saveLogoSet();}
-    else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closeLogoSet();}
+    if(k==="ArrowUp"||k==="ArrowDown"||k==="ArrowLeft"||k==="ArrowRight"){e.preventDefault();lnav(k);}
+    else if(k==="Enter"||e.keyCode===13){e.preventDefault();lnav("ArrowDown");} /* OK ينقل للخانة اللي تحتها، مش يحفظ */
+    else if(k==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closeLogoSet();}
   });
 });
 $("close").onclick=closeModal;
@@ -402,6 +413,7 @@ document.addEventListener("keydown",function(e){
   var k=e.key,kc=e.keyCode,isOpen=md.classList.contains("open");
   if(logoOn){e.preventDefault();hideLogo();return;}
   if(lmd.classList.contains("open")){
+    if(k==="ArrowUp"||k==="ArrowDown"||k==="ArrowLeft"||k==="ArrowRight"){e.preventDefault();lnav(k);return;}
     if(k==="Escape"||kc===27||kc===4){e.preventDefault();closeLogoSet();}
     return;
   }
@@ -421,6 +433,9 @@ window.__onBack=function(){if(logoOn){hideLogo();return true;}if(lmd.classList.c
 setTimeout(function(){$("hint").classList.add("off");},12000);
 showTarget();tick();requestAnimationFrame(clock);setInterval(tick,1000);
 setInterval(logoTick,1000);
+/* إعادة تحميل هادية كل 6 ساعات عشان الذاكرة تفضل نظيفة لو التطبيق شغال أيام طويلة (الإعدادات محفوظة) */
+var pageStart=Date.now();
+setInterval(function(){if(Date.now()-pageStart>=6*3600*1000&&!anyModalOpen()&&!logoOn)location.reload();},60000);
 </script>
 </body>
 </html>

@@ -75,6 +75,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        // نتأكد إن الشاشة ما تنطفيش طول ما التطبيق في المقدمة
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         web.onResume();
     }
 

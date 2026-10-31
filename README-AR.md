@@ -27,3 +27,14 @@
 
 ## تعديل التاريخ الافتراضي من الكود
 الملف `app/src/main/assets/www/index.html` ← السطر `var DEFAULT="2027-02-24T00:00"`.
+
+## توقيع ثابت للتحديثات (مرة واحدة)
+عشان التحديثات تنزل فوق النسخة المثبتة بدون حذف، لازم كل بناء يتوقع بنفس المفتاح:
+1. انسخ ملف المفتاح `debug.keystore` (من `C:\Users\<اسمك>\.android\debug.keystore`).
+2. حوّله لنص: في PowerShell: `[Convert]::ToBase64String([IO.File]::ReadAllBytes("debug.keystore")) | Set-Clipboard`
+3. في GitHub: Settings ← Secrets and variables ← Actions ← أضف:
+   - `KEYSTORE_B64` = النص اللي نسخته
+   - `KEYSTORE_PASS` = `android`
+   - `KEY_ALIAS` = `androiddebugkey`
+   - `KEY_PASS` = `android`
+4. شغّل Build APK من جديد.

@@ -91,6 +91,10 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
 .fld button{width:100%;font:inherit;font-size:3.4vh;line-height:1;padding:1.2vh 0;border:1px solid #e3d4ac;border-radius:1.4vh;background:var(--cream);color:var(--gold-d);cursor:pointer}
 .mbox.tv .mrow{margin-top:4vh;gap:2vw}
 .mbox.tv .mrow button{font-size:3vh;padding:1.4vh 3vw;border-radius:1.4vh}
+.thij{margin-top:1vh;font-size:2.6vh;color:var(--muted);font-weight:600}
+.expired{position:fixed;top:0;right:0;bottom:0;left:0;z-index:30;display:none;align-items:center;justify-content:center;background:#fff;font-size:8vh;font-weight:900;color:var(--gold-d);text-align:center;padding:5vh}
+.pw{font:inherit;font-size:4vh;letter-spacing:1vh;text-align:center;padding:1vh 2vw;width:100%;border:1px solid #e3d4ac;border-radius:1.4vh}
+.perr{color:#b00;min-height:1.4em;margin-top:1vh;font-weight:700}
 </style>
 </head>
 <body>
@@ -121,24 +125,68 @@ text-shadow:0 .6vh 0 #f1e6c8,0 2vh 4vh rgba(168,134,63,.25);animation:breathe 4s
   <section class="days" id="days">
     <div class="num" id="d">0</div>
     <div class="lbl">يوم متبقي</div>
-    <div class="target"><span>التاريخ المستهدف</span><b id="tg"></b></div>
+    <div class="target"><span>التاريخ المستهدف</span><b id="tg"></b></div><div class="thij" id="thj"></div>
   </section>
   <div class="done" id="done">🎉 حان موعد مشروع عين مكة</div>
+<div class="expired" id="expired">برجاء تجديد الاشتراك</div>
 </div>
 
 
 
 <button class="gear" id="gear" aria-label="تغيير التاريخ المستهدف">⚙</button>
-<div class="modal" id="modal"><div class="mbox tv"><h2>تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
+<div class="modal" id="modal"><div class="mbox tv"><h2 id="mt">تغيير التاريخ المستهدف</h2><div class="spin"><div class="fld"><label>اليوم</label><button type="button" data-f="d" data-s="1" aria-label="زيادة">▲</button><output id="v_d">--</output><button type="button" data-f="d" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الشهر</label><button type="button" data-f="m" data-s="1" aria-label="زيادة">▲</button><output id="v_m">--</output><button type="button" data-f="m" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>السنة</label><button type="button" data-f="y" data-s="1" aria-label="زيادة">▲</button><output id="v_y">--</output><button type="button" data-f="y" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الساعة</label><button type="button" data-f="h" data-s="1" aria-label="زيادة">▲</button><output id="v_h">--</output><button type="button" data-f="h" data-s="-1" aria-label="إنقاص">▼</button></div><div class="fld"><label>الدقيقة</label><button type="button" data-f="n" data-s="1" aria-label="زيادة">▲</button><output id="v_n">--</output><button type="button" data-f="n" data-s="-1" aria-label="إنقاص">▼</button></div></div><div class="mrow"><button id="mode" class="alt">عرض بالهجري</button><button id="save">حفظ</button><button id="reset" class="alt">الرجوع للأصلي</button><button id="close" class="alt">إغلاق</button></div></div></div>
+<div class="modal" id="pmodal"><div class="mbox"><h2>أدخل كلمة المرور</h2><input class="pw" id="pw" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="كلمة المرور"><div class="perr" id="perr"></div><div class="mrow"><button id="pok">دخول</button><button id="pcancel" class="alt">إلغاء</button></div></div></div>
 <div class="hint" id="hint">اضغط زر OK في الريموت لتغيير التاريخ المستهدف</div>
 <script>
 var DEFAULT="2027-02-24T00:00",KEY="ainmakkah-target-v3",target=DEFAULT;
+/* تاريخ انتهاء الاشتراك (ميلادي) - عدّله عند التجديد: YYYY-MM-DDTHH:mm */
+var EXPIRY="2027-03-31T23:59";
 try{var sv=localStorage.getItem(KEY);if(sv)target=sv;}catch(e){} /* التاريخ المستهدف محفوظ هنا داخل الصفحة */
 function $(i){return document.getElementById(i);}
 function p(n){return String(n).padStart(2,"0");}
 function f(n){return n.toLocaleString("en-US");}
-function showTarget(){$("tg").textContent=new Date(target).toLocaleDateString("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
+function isExpired(){return new Date()>new Date(EXPIRY);}
+
+/* ---- التاريخ الهجري (تقويم أم القرى) ---- */
+var HF=new Intl.DateTimeFormat("en-US-u-ca-islamic-umalqura-nu-latn",{year:"numeric",month:"numeric",day:"numeric",timeZone:"UTC"});
+function hijriOf(d){
+  var o={};
+  HF.formatToParts(new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),12))).forEach(function(x){o[x.type]=x.value;});
+  return {y:+o.year,m:+o.month,d:+o.day};
+}
+function gregOfHijri(y,m,d){
+  var k=Math.round((y-1)*354.367+(m-1)*29.5+(d-1));
+  var s=new Date(622,6,16+k);
+  for(var off=0;off<=60;off++){
+    for(var sg=-1;sg<=1;sg+=2){
+      if(off===0&&sg===1)continue;
+      var t=new Date(s.getFullYear(),s.getMonth(),s.getDate()+sg*off,12);
+      var h=hijriOf(t);
+      if(h.y===y&&h.m===m&&h.d===d)return t;
+    }
+  }
+  return s;
+}
+function hijriDim(y,m){
+  var t=gregOfHijri(y,m,29);
+  var h=hijriOf(new Date(t.getFullYear(),t.getMonth(),t.getDate()+1,12));
+  return (h.y===y&&h.m===m)?30:29;
+}
+function dim(y,m){return new Date(y,m,0).getDate();}
+
+function showTarget(){
+  var d=new Date(target);
+  $("tg").textContent=d.toLocaleDateString("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  try{$("thj").textContent=d.toLocaleDateString("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"});}catch(e){}
+}
+function showExpired(){
+  $("expired").style.display="flex";
+  $("days").style.display="none";
+  $("done").style.display="none";
+  md.classList.remove("open");
+}
 function tick(){
+  if(isExpired()){showExpired();return;}
   var ms=new Date(target)-new Date();
   if(isNaN(ms))return;
   var over=ms<=0;
@@ -192,24 +240,48 @@ document.addEventListener("dblclick",function(e){
 function keepAwake(){try{if(navigator.wakeLock){navigator.wakeLock.request("screen").catch(function(){});}}catch(e){}}
 document.addEventListener("visibilitychange",function(){if(!document.hidden)keepAwake();});
 keepAwake();
-var md=$("modal"),st={y:2027,m:1,d:1,h:0,n:0};
-var LIM={y:[2024,2100],m:[1,12],d:[1,31],h:[0,23],n:[0,59]},STEP={y:1,m:1,d:1,h:1,n:5};
-function dim(y,m){return new Date(y,m,0).getDate();}
+
+/* ---- نافذة تغيير التاريخ (ميلادي / هجري) ---- */
+var md=$("modal"),st={y:2027,m:1,d:1,h:0,n:0},mode="g";
+var LIM={m:[1,12],h:[0,23],n:[0,59]},STEP={y:1,m:1,d:1,h:1,n:5};
+function lim(k){
+  if(k==="y")return mode==="h"?[1400,1500]:[2024,2100];
+  if(k==="d")return [1,mode==="h"?hijriDim(st.y,st.m):dim(st.y,st.m)];
+  return LIM[k];
+}
+function setStFrom(d){
+  if(mode==="h"){var h=hijriOf(d);st.y=h.y;st.m=h.m;st.d=h.d;}
+  else{st.y=d.getFullYear();st.m=d.getMonth()+1;st.d=d.getDate();}
+  st.h=d.getHours();st.n=d.getMinutes();
+}
+function curDate(){
+  if(mode==="h"){var g=gregOfHijri(st.y,st.m,st.d);return new Date(g.getFullYear(),g.getMonth(),g.getDate(),st.h,st.n);}
+  return new Date(st.y,st.m-1,st.d,st.h,st.n);
+}
 function render(){
-  var mx=dim(st.y,st.m);if(st.d>mx)st.d=mx;
+  var mx=mode==="h"?hijriDim(st.y,st.m):dim(st.y,st.m);
+  if(st.d>mx)st.d=mx;
   $("v_d").textContent=st.d;$("v_m").textContent=st.m;$("v_y").textContent=st.y;
   $("v_h").textContent=p(st.h);$("v_n").textContent=p(st.n);
+  $("mt").textContent="تغيير التاريخ المستهدف ("+(mode==="h"?"هجري":"ميلادي")+")";
+  $("mode").textContent=mode==="g"?"عرض بالهجري":"عرض بالميلادي";
 }
 function bump(k,dir){
-  var lo=LIM[k][0],hi=LIM[k][1];
-  if(k==="d")hi=dim(st.y,st.m);
+  var L=lim(k),lo=L[0],hi=L[1];
   var v=st[k]+dir*STEP[k];
   if(v>hi)v=lo;else if(v<lo)v=hi;
   st[k]=v;render();
 }
+function toggleMode(){
+  var cur=curDate();
+  mode=mode==="g"?"h":"g";
+  setStFrom(cur);
+  render();
+}
 function openModal(){
+  if(isExpired())return;
   var d=new Date(target);if(isNaN(d))d=new Date(DEFAULT);
-  st={y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate(),h:d.getHours(),n:d.getMinutes()};
+  setStFrom(d);
   render();md.classList.add("open");
   var b=md.querySelector('[data-f="d"]');if(b)b.focus();
 }
@@ -218,7 +290,7 @@ function rows(){
   var all=[].slice.call(md.querySelectorAll("button"));
   return [all.filter(function(b){return b.dataset.s==="1";}),
           all.filter(function(b){return b.dataset.s==="-1";}),
-          [$("save"),$("reset"),$("close")]];
+          [$("mode"),$("save"),$("reset"),$("close")]];
 }
 function nav(key){
   var R=rows(),cur=document.activeElement,r=-1,c=-1,i;
@@ -233,8 +305,9 @@ function nav(key){
   R[r][c].focus();
 }
 function saveDate(){
-  var mx=dim(st.y,st.m);if(st.d>mx)st.d=mx;
-  target=st.y+"-"+p(st.m)+"-"+p(st.d)+"T"+p(st.h)+":"+p(st.n);
+  if(isExpired())return;
+  var cd=curDate();
+  target=cd.getFullYear()+"-"+p(cd.getMonth()+1)+"-"+p(cd.getDate())+"T"+p(cd.getHours())+":"+p(cd.getMinutes());
   try{localStorage.setItem(KEY,target);}catch(e){}
   showTarget();tick();closeModal();
 }
@@ -242,22 +315,44 @@ md.addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b||!b.dataset.f)return;
   bump(b.dataset.f,+b.dataset.s);
 });
-$("gear").onclick=openModal;
+var PW="4441",pmd=$("pmodal");
+function openPrompt(){
+  if(isExpired())return;
+  $("pw").value="";$("perr").textContent="";
+  pmd.classList.add("open");
+  setTimeout(function(){$("pw").focus();},50);
+}
+function closePrompt(){pmd.classList.remove("open");}
+function checkPw(){
+  if($("pw").value===PW){closePrompt();openModal();}
+  else{$("perr").textContent="كلمة المرور غير صحيحة";$("pw").value="";$("pw").focus();}
+}
+$("gear").onclick=openPrompt;
+$("pok").onclick=checkPw;
+$("pcancel").onclick=closePrompt;
+$("pw").addEventListener("keydown",function(e){
+  if(e.key==="Enter"||e.keyCode===13){e.preventDefault();checkPw();}
+  else if(e.key==="Escape"||e.keyCode===27||e.keyCode===4){e.preventDefault();closePrompt();}
+});
+$("mode").onclick=toggleMode;
 $("close").onclick=closeModal;
 $("save").onclick=saveDate;
 $("reset").onclick=function(){target=DEFAULT;try{localStorage.removeItem(KEY);}catch(e){}showTarget();tick();closeModal();};
 document.addEventListener("keydown",function(e){
   var k=e.key,kc=e.keyCode,isOpen=md.classList.contains("open");
+  if(pmd.classList.contains("open")){
+    if(k==="Escape"||kc===27||kc===4){e.preventDefault();closePrompt();}
+    return;
+  }
   if(!isOpen){
-    if(k==="Enter"||k===" "||k==="ContextMenu"||kc===13||kc===23||kc===82||kc===93){e.preventDefault();openModal();}
+    if(k==="Enter"||k===" "||k==="ContextMenu"||kc===13||kc===23||kc===82||kc===93){e.preventDefault();openPrompt();}
     return;
   }
   if(k==="ArrowLeft"||k==="ArrowRight"||k==="ArrowUp"||k==="ArrowDown"){e.preventDefault();nav(k);}
   else if(k==="Escape"||kc===27||kc===4){e.preventDefault();closeModal();}
-  /* Enter على الأزرار يعمل click تلقائياً */
 });
 /* زر الرجوع في الريموت: يُستدعى من تطبيق الأندرويد */
-window.__onBack=function(){if(md.classList.contains("open")){closeModal();return true;}return false;};
+window.__onBack=function(){if(pmd.classList.contains("open")){closePrompt();return true;}if(md.classList.contains("open")){closeModal();return true;}return false;};
 setTimeout(function(){$("hint").classList.add("off");},12000);
 showTarget();tick();requestAnimationFrame(clock);setInterval(tick,1000);
 </script>
